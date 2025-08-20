@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Data Selling</title>
+  <style>
+    body{margin:0;font-family:system-ui,Arial,Helvetica,sans-serif;background:#100022;color:#fff;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px}
+    .wrap{width:100%;max-width:560px;background:#1c0a3a;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.4);padding:28px}
+    h1{margin:0 0 6px;text-align:center}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+    .tile{background:#2b155e;border-radius:12px;padding:18px;text-align:center}
+    .big{font-size:28px;font-weight:800}
+    .bar{height:12px;background:#3a3353;border-radius:10px;overflow:hidden;margin:12px 0 20px}
+    .bar > div{height:100%;width:0;background:linear-gradient(90deg,#00e5ff,#00ff88)}
+    .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    button{padding:12px 18px;border:none;border-radius:10px;font-size:16px;cursor:pointer}
+    .start{background:#2e7d32;color:#fff}
+    .stop{background:#c62828;color:#fff}
+    .reset{background:#ffd54f;color:#111}
+    .note{text-align:center;color:#cfc8e6;margin-top:10px;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Live Data Selling</h1>
+    <p style="text-align:center;color:#b8a7d9">Rate: 500 MB = ₹1000 → ₹2.00/MB. Selling at 20 MB/sec → ₹40/sec</p>
+    <div class="grid">
+      <div class="tile">
+        <div class="big" id="mbSold">0 MB</div>
+        <div>Session Data Sold</div>
+      </div>
+      <div class="tile">
+        <div class="big" id="earn">₹0.00</div>
+        <div>Session Earnings</div>
+      </div>
+    </div>
+    <div class="bar"><div id="barFill"></div></div>
+    <div class="actions">
+      <button class="start" id="startBtn">Start Selling</button>
+      <button class="stop" id="stopBtn">Stop & Withdraw</button>
+      <button class="reset" id="resetBtn">Reset</button>
+    </div>
+    <div class="note">Demo UI only. Earnings update live while selling.</div>
+  </div>
+
+<script>
+if(localStorage.getItem('paid') !== 'true'){
+  window.location.href = 'payment.html';
+}
+
+let running = false;
+let mb = 0;
+let earn = 0;
+const ratePerMB = 2.0; // ₹2 / MB
+const speed = 20;      // MB per second
+
+const mbEl = document.getElementById('mbSold');
+const earnEl = document.getElementById('earn');
+const barFill = document.getElementById('barFill');
+
+function updateUI(){
+  mbEl.textContent = mb.toFixed(0) + ' MB';
+  earnEl.textContent = '₹' + earn.toFixed(2);
+  const pct = Math.min(mb/500, 1) * 100;
+  barFill.style.width = pct + '%';
+}
+
+let timer = null;
+function tick(){
+  mb += speed/10;              // every 100ms
+  earn += (speed/10) * ratePerMB;
+  updateUI();
+}
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  if(running) return;
+  running = true;
+  timer = setInterval(tick, 100);
+});
+
+document.getElementById('stopBtn').addEventListener('click', ()=>{
+  running = false;
+  if(timer){ clearInterval(timer); timer = null; }
+  alert('Session stopped. Withdraw initiated (demo).');
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  running = false;
+  if(timer){ clearInterval(timer); timer = null; }
+  mb = 0; earn = 0; updateUI();
+});
+
+updateUI();
+</script>
+</body>
+</html>

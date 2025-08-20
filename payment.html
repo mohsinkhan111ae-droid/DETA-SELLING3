@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Payment</title>
+  <style>
+    body{margin:0;font-family:system-ui,Arial,Helvetica,sans-serif;background:#ef6c00;color:#fff;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px}
+    .card{width:100%;max-width:460px;background:#fff;color:#111;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:28px;text-align:center}
+    h1{margin:0 0 10px;font-size:28px}
+    p{color:#444}
+    .upi{font-size:20px;font-weight:800;margin:10px 0 14px}
+    .row{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+    .btn{padding:14px 20px;border:none;border-radius:12px;background:#2e7d32;color:#fff;font-size:16px;cursor:pointer}
+    .btn-secondary{background:#455a64}
+    .note{font-size:12px;color:#666;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Payment Gateway</h1>
+    <p>Send payment to the UPI ID below and then continue.</p>
+    <div class="upi" id="upiText">6005098281@mbk</div>
+    <div class="row">
+      <button class="btn" id="copyBtn">Copy UPI</button>
+      <a href="dashboard.html" id="continueLink"><button class="btn btn-secondary" type="button">I have paid – Continue</button></a>
+    </div>
+    <div class="note">Demo only. No real payment is processed.</div>
+  </div>
+
+<script>
+if(localStorage.getItem('loggedIn') !== 'true'){
+  window.location.href = 'login.html';
+}
+document.getElementById('copyBtn').addEventListener('click', function(){
+  const upi = document.getElementById('upiText').innerText;
+  navigator.clipboard.writeText(upi).then(()=>{
+    alert('UPI ID copied: ' + upi);
+  });
+});
+document.getElementById('continueLink').addEventListener('click', function(){
+  localStorage.setItem('paid','true');
+});
+</script>
+</body>
+</html>

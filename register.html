@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register</title>
+  <style>
+    body{margin:0;font-family:system-ui,Arial,Helvetica,sans-serif;background:#0d47a1;color:#fff;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px}
+    .card{width:100%;max-width:420px;background:#fff;color:#111;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:28px}
+    h1{margin:0 0 4px;font-size:28px}
+    p.sub{margin:0 0 16px;color:#555}
+    label{display:block;margin:12px 0 6px;font-weight:600}
+    input{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:10px;font-size:16px}
+    .btn{width:100%;margin-top:18px;padding:14px;border:none;border-radius:12px;background:#0d47a1;color:#fff;font-size:16px;cursor:pointer}
+    .link{display:block;text-align:center;margin-top:10px;color:#0d47a1;text-decoration:none;font-weight:600}
+    .note{font-size:12px;color:#666;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Create account</h1>
+    <p class="sub">Start by registering your details.</p>
+    <form id="regForm">
+      <label>Name</label>
+      <input id="name" type="text" required placeholder="Your full name">
+      <label>Email</label>
+      <input id="email" type="email" required placeholder="you@example.com">
+      <label>Password</label>
+      <input id="pass" type="password" required placeholder="••••••••">
+      <button class="btn" type="submit">Register</button>
+    </form>
+    <a class="link" href="login.html">Already have an account? Login</a>
+    <div class="note">Demo only: data is stored locally in your browser (localStorage).</div>
+  </div>
+
+<script>
+document.getElementById('regForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const pass = document.getElementById('pass').value;
+  if(!name || !email || !pass){ alert('Please fill all fields'); return; }
+  localStorage.setItem('userName', name);
+  localStorage.setItem('userEmail', email);
+  localStorage.setItem('userPass', pass);
+  localStorage.setItem('userRegistered', 'true');
+  localStorage.removeItem('loggedIn');
+  localStorage.removeItem('paid');
+  window.location.href = 'login.html';
+});
+</script>
+</body>
+</html>
